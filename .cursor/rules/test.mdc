@@ -1,0 +1,185 @@
+---
+description: Rules for test code
+globs: 
+alwaysApply: false
+---
+# Testing Rules for Next.js Project
+
+Based on your Feature-Sliced Design folder structure and installed libraries, here are the testing rules to follow:
+
+- When writing integration tests, divide the configured business logic into appropriate units to verify component sets and reduce unnecessary unit tests.
+
+- When dividing integration tests based on business logic:
+  
+  1. Verify as close to reality as possible without mocking when possible.
+  
+  2. Write test code in higher-level components for state management or API calls that handle business logic.
+  
+  3. Consider the possibility of changes and separately verify business logic that combines features from multiple domains.
+
+## File Structure
+1. Place test files adjacent to the code they test with .test.ts(x) suffix:
+
+```shell
+   src/
+     entities/
+       storage/
+         ui/
+           Grid.tsx
+           Grid.test.tsx
+```
+
+2. Create test utilities in the shared layer:
+```shell
+   src/
+     shared/
+       lib/
+         test/
+           test-utils.tsx  // Custom render with providers
+           mocks/          // API mocks
+           fixtures/       // Test data
+
+```
+
+## Naming Conventions
+
+```shell
+   Button.tsx → Button.test.tsx
+
+```
+
+```tsx
+   const renderWithProviders = (ui: React.ReactElement) => { /* ... */ };
+```
+
+```tsx
+   describe('FileUpload', () => {
+     it('shows error message when upload fails', () => { /* ... */ });
+   });
+```
+
+## Code Style
+
+1. Use arrow functions for test cases:
+
+```ts
+   // Good
+   it('renders correctly', () => {
+     // Test code
+   });
+   
+   // Bad
+   it('renders correctly', function() {
+     // Test code
+   });
+```
+
+
+
+2. Use early returns and avoid nested conditions:
+
+```ts
+   // Good
+   const setupTest = () => {
+     if (condition) {
+       return renderA();
+     }
+     return renderB();
+   };
+   
+   // Bad
+   const setupTest = () => {
+     if (condition) {
+       renderA();
+     } else {
+       renderB();
+     }
+   };
+```
+
+
+3. Prefer explicit assertions over multiple assertions:
+
+```tsx
+   // Good
+   expect(button).toBeInTheDocument();
+   expect(button).toBeEnabled();
+   
+   // Bad
+   expect(button).toBeInTheDocument().toBeEnabled();
+```
+
+
+## Testing Approach by Layer
+
+1. Shared Layer (80%+ coverage):
+- Unit test utilities, hooks, and UI components
+- Focus on pure functions and reusable components
+
+2. Entities Layer (70%+ coverage):
+- Test UI components with mock data
+- Test model logic and state management
+
+3. Features Layer (60%+ coverage):
+- Test user interactions and business logic
+- Mock API calls with MSW
+
+4. Widgets Layer (50%+ coverage):
+- Test composition of features and entities
+- Focus on integration between components
+
+5. Pages Layer (30-40% coverage):
+- Integration tests focusing on page composition
+- Test data fetching with MSW
+
+
+## Best Practices
+
+
+1. Use render from your custom test-utils instead of directly from testing-library:
+
+```tsx
+   // Good
+   import { render, screen } from '@/shared/lib/test/test-utils';
+   
+   // Bad
+   import { render, screen } from '@testing-library/react';
+```
+
+2. Use userEvent for simulating user interactions:
+
+```tsx
+   // Good
+   const { user } = render(<Button onClick={handleClick}>Click me</Button>);
+   await user.click(screen.getByText('Click me'));
+   
+   // Bad
+   fireEvent.click(screen.getByText('Click me'));
+```
+
+3. Use data-testid attributes sparingly, prefer user-centric queries:
+
+```tsx
+   // Good
+   screen.getByRole('button', { name: 'Submit' });
+   
+   // Use data-testid only when necessary
+   screen.getByTestId('file-upload-progress');
+```
+
+4. Mock external dependencies and API calls:
+
+```tsx
+   // Use vi.mock for module mocking
+   vi.mock('@/shared/lib/api', () => ({
+     fetchData: vi.fn().mockResolvedValue({ data: 'mocked data' }),
+   }));
+```
+
+5. Clean up after each test:
+
+```tsx
+   afterEach(() => {
+     vi.clearAllMocks();
+   });
+```

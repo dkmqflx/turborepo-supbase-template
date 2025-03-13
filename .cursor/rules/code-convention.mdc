@@ -1,0 +1,370 @@
+---
+description: Code Convention
+globs: 
+alwaysApply: false
+---
+- These are the code conventions that should be followed
+
+
+- For Boolean values, use the 'is' prefix as a basic rule, but 'has' and others are also allowed depending on the situation.
+
+```ts
+
+// Good
+const Component = () => {
+	const isDisabled = true;
+	const hasButton = true;
+	return (
+		<button disabled={isDisabled} hasButton={hasButton} />
+	)
+}
+// Bad
+const Component = () => {
+	const disabled = true;
+	const buttonVisible = true;
+	return (
+		<button disabled={disabled} buttonVisible={buttonVisible} />
+	)
+}
+
+```
+
+- For arrays, add the postfix '-s' to variable names.
+
+```ts
+// Good
+const items = [ ... ];
+// Bad
+const itemArr = [ ... ];
+const itemList = [ ... ];
+```
+
+- Define React Component variables using PascalCase.
+
+```ts
+// Good
+const FileCard = () => {
+	const isDisabled = true;
+	return (
+		<button disabled={isDisabled} />
+	)
+}
+// Bad
+const fileCard = () => {
+	const isDisabled = true;
+	return (
+		<button disabled={isDisabled} />
+	)
+}
+ 
+```
+
+
+- Define Type variables using PascalCase.
+
+```ts
+
+// Good
+export type User = 'string'
+// Bad
+export type user = 'string'
+```
+
+- Define all variables other than React Components and Types using camelCase.
+```ts
+
+// Good
+export const passwordSchema = z.string().min(1, { message: 'Please enter your password' });
+// Bad
+export const PasswordSchema = z.string().min(1, { message: 'Please enter your password' });
+ ```
+
+- Use Korean variable names when English definitions would be awkward or difficult to understand
+```ts
+const paymentHistory = 'history';
+const coinCharge = 'coin';
+ 
+```
+
+- Define constants in uppercase at the top of the component
+```ts
+const AUTH = 'Authentication'
+function Component(){
+}
+```
+
+
+- Define React Component file names using PascalCase.
+```shell
+
+// Good
+- components
+  - Dashboard.tsx
+// Bad  
+- components
+  - dashboard.tsx
+```
+
+
+
+- For conditionals, use early return instead of if-else patterns. (no-else-return)
+```ts
+// Good
+const execExample = () => {
+	if (a) {
+		return b;
+	}
+	return c;
+}
+// Bad
+const execExample = () => {
+	if (a) {
+		return b;
+	} else {
+		return c;
+	}
+}
+ 
+```
+
+- For ternary operators, avoid nesting them. (no-nested-ternary)
+```ts
+// Good
+const isExample = a ? b : c; 
+const isExample2 = (() =>{
+	if (a) {
+		return b;
+	}
+	if (c) {
+		return d;
+	}
+	return e;
+}());
+// Bad
+const isExample2 = a ? b : c ? d : e;
+```
+
+
+- When defining numeric values directly, use '_' to separate thousands.
+```ts
+// Good
+const num = 10_000; // Use '_' to separate by 1000 units
+// Bad
+const num = 10000; // No separation by 1000 units
+```
+
+
+- Avoid using inline functions when possible.
+```tsx
+// Good
+const Component = () => {
+
+	const onClick = () => {
+		setState("foo");
+	}
+	return (
+		<Button 
+			onClick={onClick}
+		/>
+	)
+}
+// Bad
+const Component = () => {
+  
+	return (
+		<Button 
+			onClick={()=>	setState("foo")}
+		/>
+	)
+}
+```
+
+- Use useMemo and useCallback only when optimization is needed due to performance issues.
+
+
+- Use arrow functions as the default way to define functions.
+```ts
+// Good
+const foo = () => {
+	...
+}
+// Bad
+function foo() {
+	return <div />
+}
+```
+
+- Use .ts extension for files that don't return React Components.
+
+```tsx
+// Good - useHook.ts
+const useHook = () => {
+	const [state, setState] = useState();
+	return {
+		state, 
+		setState
+	}
+}
+// Bad - useHook.tsx
+const useHook = () => {
+	const [state, setState] = useState();
+	return {
+		state, 
+		setState
+	} 
+}
+```
+
+- Omit the value 'true' when passing boolean props.
+```tsx
+// Good 
+const Component = () => {
+	return (
+		<button disabled />
+	)
+}
+// Bad
+const Component = () => {
+	return (
+		<button disabled={true} />
+	)
+}
+```
+
+- Use Self-Closing tags for components without children.
+
+```tsx
+// Good
+function Component(){
+  return <Table/>
+}
+// Bad
+function Component(){
+  return <Table></Table>
+}
+```
+
+- Use 'on-' prefix for functions passed as props, and 'handle-' prefix for functions that are executed within the component where they are declared.
+
+```tsx
+// Good
+const Component = () => {
+	const onClick = () => {
+		console.log("Bar!");
+	}
+	const handleClick = () => {
+		console.log("Foo!");
+	}
+	return (
+		<>
+			<Card onClick={onClick}/>
+			<button onClick={handleClick} />
+		</>
+	)
+}
+// Bad
+const Component = () => {
+	const handleClick = () => {
+		console.log("Foo!");
+	}
+	return <Card handleClick={handleClick} />
+}
+```
+ 
+
+- Define props types at the top of the component.
+```tsx
+// Good
+type propsType = {
+  foo:string;
+  bar:string;
+}
+function component({foo, bar}:propsType){
+ ...
+} 
+// Bad
+import { propsType } from './types'
+function component({foo, bar}:propsType){
+ ...
+} 
+```
+
+
+- For TypeScript request/response types, use 'Request'/'Response' as a suffix.
+```ts
+// Good
+type ApiFooRequest = {
+	// ...
+}
+// Bad
+type ApiBarRequestData = {
+	// ... 
+}
+type ApiBazRequestDto = {
+	// ...
+}
+```
+
+- Define TypeScript API request/response values in alphabetical order.
+```ts
+// Good
+type ApiFooRequest = {
+	a: number;
+	b: string;
+	c: string;
+}
+// Bad
+type ApiFooRequest = {
+	c: number;
+	a: string;
+	b: string;
+}
+type ApiFooRequest = {
+	b: string;
+	c: number;
+	a: string;
+}
+```
+
+- Add TSDoc comments for complex object types.
+```ts
+type ComplexType = {
+  /** Unique ID */
+  id: number;
+  ...
+}
+```
+
+- When a type name conflicts with another variable name, add 'Type' suffix.
+```ts
+// Good
+export type ButtonProps = {
+}
+export type ButtonPropsType = {
+  ...
+}
+// Bad
+export type TButtonProps = {
+  ...
+}
+```
+
+- Import and export types using the 'type' keyword (`Type-Only Imports and Exports`).
+```ts
+// Good
+import type { SomethingType } from "xxx.type"
+// Bad
+import { SomethingType } from "xxx.type"
+```
+
+- Use kebab-case for page names.
+```shell
+// Good
+├── app
+│   ├── sign-in
+│   ├── sign-up
+// Bad
+├── app
+│   ├── signIn
+│   ├── sign
+```
