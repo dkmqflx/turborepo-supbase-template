@@ -1,8 +1,3 @@
----
-description: Rules for test code
-globs: 
-alwaysApply: false
----
 # Testing Rules for Next.js Project
 
 Based on your Feature-Sliced Design folder structure and installed libraries, here are the testing rules to follow:
@@ -182,4 +177,4 @@ Based on your Feature-Sliced Design folder structure and installed libraries, he
    afterEach(() => {
      vi.clearAllMocks();
    });
-```
+``` 
