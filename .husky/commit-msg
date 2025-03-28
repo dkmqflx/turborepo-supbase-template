@@ -1,0 +1,2 @@
+echo "🚦 Checks if the commit is written according to the rules."
+pnpx commitlint --edit $1
