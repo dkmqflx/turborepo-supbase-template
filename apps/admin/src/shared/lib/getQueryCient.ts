@@ -7,6 +7,8 @@ import {
   isServer,
 } from '@tanstack/react-query';
 
+import { toast } from '@repo/ui/components/ui/sonner';
+
 export function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -22,7 +24,7 @@ export function makeQueryClient() {
       onError: (error) => {
         console.error(error);
         if (!isServer) {
-          import('sonner').then(({ toast }) => toast.error(error.message));
+          toast.error(error.message);
         }
       },
     }),
@@ -30,9 +32,8 @@ export function makeQueryClient() {
     queryCache: new QueryCache({
       onError: (error) => {
         console.error(error);
-
         if (!isServer) {
-          import('sonner').then(({ toast }) => toast.error(error.message));
+          toast.error(error.message);
         }
       },
     }),

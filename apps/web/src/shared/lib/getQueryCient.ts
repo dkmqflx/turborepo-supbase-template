@@ -7,7 +7,7 @@ import {
   isServer,
 } from '@tanstack/react-query';
 
-import { showErrorToast } from './toast';
+import { toast } from '@repo/ui/components/ui/sonner';
 
 export function makeQueryClient() {
   return new QueryClient({
@@ -23,14 +23,18 @@ export function makeQueryClient() {
     mutationCache: new MutationCache({
       onError: (error) => {
         console.error(error);
-        showErrorToast(error);
+        if (!isServer) {
+          toast.error(error.message);
+        }
       },
     }),
 
     queryCache: new QueryCache({
       onError: (error) => {
         console.error(error);
-        showErrorToast(error);
+        if (!isServer) {
+          toast.error(error.message);
+        }
       },
     }),
   });
