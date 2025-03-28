@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
-    "add:ui": "pnpm dlx shadcn@latest add"
+    "ui": "pnpm dlx shadcn@latest add"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

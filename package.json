@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "ui:add": "pnpm --filter @repo/ui add:ui",
+    "ui:add": "pnpm --filter @repo/ui ui",
     "prepare": "husky",
     "generate-types": "npx supabase gen types typescript --project-id <project-id> --schema public > packages/types/src/database.ts"
   },
