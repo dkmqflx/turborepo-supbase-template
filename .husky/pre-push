@@ -1,8 +1,15 @@
 # pre-push
 
-branch="$(git rev-parse --abbrev-ref HEAD)"
+# branch="$(git rev-parse --abbrev-ref HEAD)"
 
-if [ "$branch" = "main" ] || [ "$branch" = "dev" ] ; then
-  echo "You cannot push directly to the $branch branch."
-  exit 1
-fi
+# if [ "$branch" = "main" ] || [ "$branch" = "dev" ] ; then
+#   echo "You cannot push directly to the $branch branch."
+#   exit 1
+# fi
+
+# This is a pre-push hook that will run before you push to the remote repository.
+# It will check if the branch is main or dev and if it is, it will exit with a message.
+# This is to prevent you from pushing to the main or dev branch.
+# if you want to prevent pushing to the main or dev branch, you can activate the above code.
+
+
