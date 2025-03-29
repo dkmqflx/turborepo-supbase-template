@@ -1,16 +1,19 @@
 {
-  "name": "@repo/types",
-  "version": "0.1.0",
+  "name": "@repo/utils",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./api": "./src/api.ts",
-    "./database": "./src/database.ts"
+    "./apiClient": "./src/apiClient.ts"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/constants": "workspace:*",
+    "@repo/types": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

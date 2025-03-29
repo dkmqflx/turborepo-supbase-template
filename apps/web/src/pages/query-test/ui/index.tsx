@@ -4,13 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@repo/ui/components/ui/button';
 
+import { apiClientInstance } from '@/shared/lib/apiClient';
+
 // This function will always throw an error
 const fetchWithError = async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts/error');
-  if (!res.ok) {
-    throw new Error('Test error message');
-  }
-  return res.json();
+  const { data } = await apiClientInstance.get('/posts/error');
+
+  return data;
 };
 
 export function QueryTest() {
