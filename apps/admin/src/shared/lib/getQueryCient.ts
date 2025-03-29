@@ -21,6 +21,7 @@ export function makeQueryClient() {
       },
     },
     mutationCache: new MutationCache({
+      // NOTE: add error toast for mutation
       onError: (error) => {
         console.error(error);
         if (!isServer) {
@@ -28,7 +29,7 @@ export function makeQueryClient() {
         }
       },
     }),
-
+    // NOTE: add error toast for query
     queryCache: new QueryCache({
       onError: (error) => {
         console.error(error);

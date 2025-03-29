@@ -3,6 +3,7 @@
 import { useTheme } from 'next-themes';
 import { Toaster as Sonner } from 'sonner';
 
+// NOTE: this export is added for error toast
 export { toast } from 'sonner';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
