@@ -1,84 +1,185 @@
-# Turborepo starter
+# Next.js + Supabase Monorepo Template
 
-This Turborepo starter is maintained by the Turborepo core team.
+Monorepo template using Next.js 14, Supabase, and TurboRepo with Feature-Sliced Design architecture.
 
-## Using this example
+## Features
 
-Run the following command:
+- 🏗️ [TurboRepo](https://turbo.build/) for monorepo management
+- ⚡ [Next.js 14](https://nextjs.org/) with App Router
+- 🔐 [Supabase](https://supabase.com/) for authentication and database
+- 📦 [pnpm](https://pnpm.io/) for fast, disk space efficient package management
+- 🎨 [Shadcn/ui](https://ui.shadcn.com/) + [Tailwind CSS](https://tailwindcss.com/) for styling
+- 🔄 [TanStack Query](https://tanstack.com/query/latest) for server state management
 
-```sh
-npx create-turbo@latest
-```
+## Project Structure
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+The project follows Feature-Sliced Design (FSD) architecture and includes:
 
 ```
-cd my-turborepo
-pnpm build
+.
+├── apps/
+│   ├── admin/          # Admin dashboard
+│   └── web/            # Main web application
+├── packages/
+│   ├── constants/      # Shared constants
+│   ├── eslint-config/  # ESLint configurations
+│   ├── supabase/      # Supabase client and types
+│   ├── types/         # Shared TypeScript types
+│   ├── ui/            # Shared UI components
+│   └── utils/         # Shared utilities
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
+Each app follows FSD structure:
 
 ```
-cd my-turborepo
-pnpm dev
+src/
+├── app/          # Next.js app router pages
+├── entities/     # Business entities
+├── features/     # User scenarios
+├── shared/       # Shared code
+└── widgets/      # Composite components
 ```
 
-### Remote Caching
+## Getting Started
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Prerequisites
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [pnpm](https://pnpm.io/) (v8 or higher)
+- [Supabase](https://supabase.com/) account
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+### Setup
+
+1.  Clone the repository:
+
+    ```bash
+    git clone https://github.com/yourusername/your-repo-name.git
+
+    cd your-repo-name
+    ```
+
+2.  Install dependencies:
+
+    ```bash
+    pnpm install
+    ```
+
+3.  Create .env files:
+
+    For web app (apps/web/.env):
+
+    ```env
+    # supabase
+
+    NEXT_PUBLIC_SUPABASE_URL=""
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=""
+    NEXT_SUPABASE_SERVICE_ROLE=""
+    NEXT_SUPABASE_DB_PASSWORD=""
+
+    ```
+
+    For admin app (apps/admin/.env):
+
+    ```env
+    # supabase
+
+    NEXT_PUBLIC_SUPABASE_URL=""
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=""
+    NEXT_SUPABASE_SERVICE_ROLE=""
+    NEXT_SUPABASE_DB_PASSWORD=""
+
+    ```
+
+## Notes
+
+### Supabase Project ID
+
+In `packages/supabase/package.json`, replace `<project-id>` with your Supabase project ID:
+
+```json
+{
+  "scripts": {
+    "generate-types": "npx supabase gen types typescript --project-id <project-id> --schema public > packages/types/src/database.ts"
+  }
+}
+```
+
+After setting up your Supabase schema, generate types:
+
+```shell
+
+pnpm generate-types
 
 ```
-cd my-turborepo
-npx turbo login
+
+### Environment Variables
+
+Make sure to create `.env` files in both `apps/web` and `apps/admin` directories. Never commit these files to version control.
+
+### Adding UI Components
+
+To add new shadcn/ui components:
+
+```bash
+pnpm ui:add <component-name>
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### TODO Tree Comments
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+This project uses TODO Tree for better code organization and documentation. You can use the following comment tags throughout the codebase:
 
+- `NOTE:` - Important information about code implementation or architectural decisions
+- `TODO:` - Tasks that need to be completed
+- `FIXME:` - Issues that need to be fixed
+- `NAME:` - Name of person who created the comments
+
+Example of NOTE comments in the codebase:
+
+I recommend to read the following comment tags
+
+```typescript
+// admin/src/shared/lib/getQueryCient
+// web/src/shared/lib/getQueryCient
+
+// NOTE: add error toast for mutation
+const queryClient = new QueryClient({
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+})
+
+// NOTE: add error toast for query
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+})
 ```
-npx turbo link
+
+```typescript
+// admin/src/shared/lib/supabaseMiddleware
+// web/src/shared/lib/supabaseMiddleware
+
+// NOTE: if you want to redirect to login page, uncomment the following code
+// if (!session) {
+//   return NextResponse.redirect(new URL('/login', request.url))
+// }
 ```
 
-## Useful Links
+```typescript
+// packages/ui/src/components/ui/sonner.tsx
+// NOTE: this export is added for error toast
+export { toast } from 'sonner';
+```
 
-Learn more about the power of Turborepo:
+## License
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
