@@ -6,7 +6,11 @@ import { Button } from '@repo/ui/components/ui/button';
 
 // This function will always throw an error
 const fetchWithError = async () => {
-  throw new Error('Test error message');
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts/error');
+  if (!res.ok) {
+    throw new Error('Test error message');
+  }
+  return res.json();
 };
 
 export function QueryTest() {
@@ -14,6 +18,7 @@ export function QueryTest() {
     queryKey: ['test-error'],
     queryFn: fetchWithError,
     enabled: false, // Don't run automatically
+    retry: false,
   });
 
   return (
