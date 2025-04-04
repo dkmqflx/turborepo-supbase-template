@@ -1,16 +1,21 @@
 {
   "name": "@repo/types",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./api": "./src/api.ts",
-    "./database": "./src/database.ts"
-  },
   "scripts": {
-    "lint": "eslint .",
-    "check-types": "tsc --noEmit"
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "exports": {
+    "./api": {
+      "types": "./src/api.ts",
+      "default": "./dist/api.js"
+    },
+    "./database": {
+      "types": "./src/database.ts",
+      "default": "./dist/database.js"
+    }
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
