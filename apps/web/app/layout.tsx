@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { Toaster } from '@repo/ui/components/ui/sonner';
+import { Toaster } from '@repo/ui/sonner';
 
 import QueryProvider from '@/app/providers/QueryProvider';
 

@@ -7,7 +7,7 @@ import {
   isServer,
 } from '@tanstack/react-query';
 
-import { toast } from '@repo/ui/components/ui/sonner';
+import { toast } from '@repo/ui/sonner';
 
 export function makeQueryClient() {
   return new QueryClient({

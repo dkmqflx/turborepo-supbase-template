@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { Button } from '@repo/ui/components/ui/button';
+import { Button } from '@repo/ui/button';
 
 import { apiClientInstance } from '@/shared/lib/apiClient';
 

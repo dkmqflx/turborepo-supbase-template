@@ -3,7 +3,7 @@
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Button } from '@repo/ui/components/ui/button';
+import { Button } from '@repo/ui/button';
 
 /**
  * for unexpected error,
