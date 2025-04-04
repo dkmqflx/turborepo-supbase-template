@@ -3,13 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./apiClient": "./src/apiClient.ts"
-  },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "exports": {
+    "./apiClient": {
+      "types": "./src/apiClient.ts",
+      "default": "./dist/apiClient.js"
+    }
   },
   "dependencies": {
     "@repo/constants": "workspace:*",
