@@ -18,7 +18,8 @@
     "./lib/*": {
       "types": "./src/lib/*.ts",
       "default": "./dist/lib/*.js"
-    }
+    },
+    "./tailwind.config": "./tailwind.config.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
