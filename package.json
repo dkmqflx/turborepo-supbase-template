@@ -13,7 +13,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+      "eslint --max-warnings 0"
     ]
   },
   "devDependencies": {
@@ -24,8 +24,10 @@
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "turbo": "^2.4.4",
-    "typescript": "5.8.2"
+    "turbo": "^2.1.1",
+    "typescript": "catalog:",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

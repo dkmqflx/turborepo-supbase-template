@@ -3,12 +3,6 @@ const { resolve } = require('node:path');
 
 const project = resolve(process.cwd(), 'tsconfig.json');
 
-/*
- * This is a custom ESLint configuration for use with
- * internal (bundled by their consumer) libraries
- * that utilize React.
- */
-
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: ['eslint:recommended', 'turbo'],
@@ -17,9 +11,8 @@ module.exports = {
     React: true,
     JSX: true,
   },
-
   env: {
-    browser: true,
+    node: true,
   },
   settings: {
     'import/resolver': {
@@ -29,13 +22,15 @@ module.exports = {
     },
   },
   ignorePatterns: [
-    // Ignore dotfiles
-    '.*.js',
+    '!.eslintrc.js', // .eslintrc.js는 린트 검사
+    '!.eslintrc.cjs', // .eslintrc.cjs도 린트 검사
+    '.*.{js,cjs}', // 그 외 .으로 시작하는 파일은 무시
     'node_modules/',
     'dist/',
   ],
   overrides: [
-    // Force ESLint to detect .tsx files
-    { files: ['*.js?(x)', '*.ts?(x)'] },
+    {
+      files: ['*.js?(x)', '*.ts?(x)'],
+    },
   ],
 };
