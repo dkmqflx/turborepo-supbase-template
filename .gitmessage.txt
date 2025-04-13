@@ -1,0 +1,18 @@
+# <type>: <subject>
+# Commit message must be at least 10 characters long.
+
+
+# Body 
+# Write the body content from the next line.
+
+# Footer is not used.
+
+# Commit Type
+# feat : Add new features or logic.
+# fix : Fix bugs.
+# style : Add style-related code only.
+# chore : Package installation, deletion, updates, and CI/CD automation tasks.
+# refactor : Improve code while maintaining existing functionality. If functionality changes during code improvement, separate those changes into a commit with feat type.
+# docs : Write documentation code.
+
+
