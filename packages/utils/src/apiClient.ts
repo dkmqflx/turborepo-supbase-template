@@ -1,5 +1,3 @@
-import type { BaseResponse } from '@repo/types/api';
-
 export class ApiClient {
   private baseUrl: string;
 
@@ -7,7 +5,7 @@ export class ApiClient {
     this.baseUrl = url;
   }
 
-  private async handleResponse<T>(response: Response): Promise<BaseResponse<T>> {
+  private async handleResponse(response: Response) {
     if (!response.ok) {
       const result = await response.json();
       throw new Error(`${result?.message ?? `HTTP error. Status Code: ${response.status}`}`);
@@ -34,13 +32,13 @@ export class ApiClient {
     return url.toString();
   }
 
-  private async request<T>(
+  private async request(
     method: string,
     endpoint: string,
     options?: RequestInit,
     body?: Record<string, unknown>,
     queryParams?: Record<string, string | number | boolean>,
-  ): Promise<BaseResponse<T>> {
+  ) {
     const url = this.buildUrl(endpoint, queryParams);
 
     const response = await fetch(url, {
@@ -53,26 +51,22 @@ export class ApiClient {
       ...options,
     });
 
-    return this.handleResponse<T>(response);
+    return this.handleResponse(response);
   }
 
-  public get<T>(endpoint: string, queryParams?: Record<string, string | number | boolean>, options?: RequestInit) {
-    return this.request<T>('GET', endpoint, options, undefined, queryParams);
+  public get(endpoint: string, queryParams?: Record<string, string | number | boolean>, options?: RequestInit) {
+    return this.request('GET', endpoint, options, undefined, queryParams);
   }
 
-  public post<T, TData extends Record<string, unknown> | undefined>(
-    endpoint: string,
-    body: TData,
-    options?: RequestInit,
-  ) {
-    return this.request<T>('POST', endpoint, options, body);
+  public post(endpoint: string, body: Record<string, unknown> | undefined, options?: RequestInit) {
+    return this.request('POST', endpoint, options, body);
   }
 
-  public put<T, TData extends Record<string, unknown>>(endpoint: string, body: TData, options?: RequestInit) {
-    return this.request<T>('PUT', endpoint, options, body);
+  public put(endpoint: string, body: Record<string, unknown>, options?: RequestInit) {
+    return this.request('PUT', endpoint, options, body);
   }
 
-  public delete<T>(endpoint: string, options?: RequestInit) {
-    return this.request<T>('DELETE', endpoint, options);
+  public delete(endpoint: string, options?: RequestInit) {
+    return this.request('DELETE', endpoint, options);
   }
 }
