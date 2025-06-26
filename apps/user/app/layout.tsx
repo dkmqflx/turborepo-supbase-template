@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 
 import { Toaster } from '@repo/ui/sonner';
 
+import QueryErrorBoundary from '@/app/providers/QueryErrorBoundary';
 import QueryProvider from '@/app/providers/QueryProvider';
 
 import './globals.css';
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <QueryErrorBoundary>{children}</QueryErrorBoundary>
+        </QueryProvider>
         <Toaster />
       </body>
     </html>
