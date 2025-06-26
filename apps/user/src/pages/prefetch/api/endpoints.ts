@@ -1,9 +1,9 @@
-import { apiClientInstance } from '@/shared/lib/apiClient';
+import { client } from '@/shared/lib/apiClient';
 
 import type { Post } from './types';
 
 export const getPosts = async (): Promise<Post[]> => {
-  const { data } = await apiClientInstance.get('/api/posts');
+  const { data } = await client.get('/api/posts');
 
   return data;
 };

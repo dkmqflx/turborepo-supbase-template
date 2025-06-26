@@ -4,11 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@repo/ui/button';
 
-import { apiClientInstance } from '@/shared/lib/apiClient';
+import { client } from '@/shared/lib/apiClient';
 
 // This function will always throw an error
 const fetchWithError = async () => {
-  const { data } = await apiClientInstance.get('/posts/error');
+  const { data } = await client.get('/posts/error');
 
   return data;
 };
