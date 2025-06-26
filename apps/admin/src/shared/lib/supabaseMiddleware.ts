@@ -25,7 +25,6 @@ export async function updateSession(request: NextRequest) {
       },
     },
   );
-  console.log('supabase', supabase);
 
   // Do not run code between createServerClient and
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug

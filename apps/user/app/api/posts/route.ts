@@ -6,8 +6,8 @@ import type { Post } from '@/pages/prefetch/api/types';
 export async function GET(): Promise<Response> {
   const response: BaseResponse<Post[]> = {
     data: mockPosts,
-    error: null,
-    status: 200,
+    isSuccess: true,
+    code: 'SUCCESS',
     message: 'Posts fetched successfully',
   };
 

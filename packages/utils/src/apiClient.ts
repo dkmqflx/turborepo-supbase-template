@@ -13,6 +13,7 @@ export class ApiClient {
 
     try {
       const result = await response.json();
+
       return result;
     } catch (error) {
       console.warn('Error parsing JSON response:', error);
