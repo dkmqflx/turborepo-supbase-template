@@ -1,5 +1,4 @@
 import {
-  MutationCache,
   QueryCache,
   QueryClient,
   defaultShouldDehydrateMutation,
@@ -20,15 +19,6 @@ export function makeQueryClient() {
         shouldDehydrateMutation: (query) => defaultShouldDehydrateMutation(query) || query.state.status === 'pending',
       },
     },
-    mutationCache: new MutationCache({
-      // NOTE: add error toast for mutation
-      onError: (error) => {
-        console.error(error);
-        if (!isServer) {
-          toast.error(error.message);
-        }
-      },
-    }),
 
     queryCache: new QueryCache({
       // NOTE: add error toast for query
