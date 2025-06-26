@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { Button } from '@repo/ui/button';
 import { toast } from '@repo/ui/sonner';
+import { ApiError } from '@repo/utils/apiError';
 
 import { client } from '@/shared/lib/apiClient';
 
@@ -35,7 +36,12 @@ export function QueryTest() {
   const { mutate: mutateWithError } = useMutation({
     mutationFn: fetchWithErrorMutation,
     onError: (error) => {
-      toast.error(error.message);
+      console.log(error);
+
+      // NOTE: you can handle error depend on your error code type
+      if (error instanceof ApiError) {
+        toast.error(error.message);
+      }
     },
   });
 

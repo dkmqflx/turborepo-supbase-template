@@ -11,6 +11,10 @@
     "./apiClient": {
       "types": "./src/apiClient.ts",
       "default": "./dist/apiClient.js"
+    },
+    "./apiError": {
+      "types": "./src/apiError.ts",
+      "default": "./dist/apiError.js"
     }
   },
   "dependencies": {

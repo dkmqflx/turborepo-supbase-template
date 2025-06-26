@@ -1,3 +1,5 @@
+import { ApiError } from './apiError';
+
 export class ApiClient {
   private baseUrl: string;
 
@@ -8,7 +10,13 @@ export class ApiClient {
   private async handleResponse(response: Response) {
     if (!response.ok) {
       const result = await response.json();
-      throw new Error(`${result?.message ?? `HTTP error. Status Code: ${response.status}`}`);
+
+      throw new ApiError({
+        code: result?.code,
+        message: result?.message,
+        data: result?.data,
+        isSuccess: result?.isSuccess,
+      });
     }
 
     try {
