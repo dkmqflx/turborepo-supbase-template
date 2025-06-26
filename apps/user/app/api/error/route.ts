@@ -10,3 +10,14 @@ export async function GET(): Promise<Response> {
 
   return Response.json(response, { status: 400 });
 }
+
+export async function POST(): Promise<Response> {
+  const response: BaseResponse<null> = {
+    data: null,
+    isSuccess: false,
+    code: 'FAILED',
+    message: 'Posts fetched failed',
+  };
+
+  return Response.json(response, { status: 400 });
+}
