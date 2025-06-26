@@ -8,7 +8,7 @@ import { client } from '@/shared/lib/apiClient';
 
 // This function will always throw an error
 const fetchWithError = async () => {
-  const { data } = await client.get('/posts/error');
+  const { data } = await client.get('/api/error');
 
   return data;
 };
