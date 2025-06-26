@@ -15,7 +15,7 @@ const fetchWithError = async () => {
 };
 
 const fetchWithErrorMutation = async () => {
-  const { data } = await client.post('/api/error', {});
+  const { data } = await client.post('/api/error');
 
   return data;
 };

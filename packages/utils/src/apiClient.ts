@@ -59,11 +59,11 @@ export class ApiClient {
     return this.request('GET', endpoint, options, undefined, queryParams);
   }
 
-  public post(endpoint: string, body: Record<string, unknown> | undefined, options?: RequestInit) {
+  public post(endpoint: string, body?: Record<string, unknown> | undefined, options?: RequestInit) {
     return this.request('POST', endpoint, options, body);
   }
 
-  public put(endpoint: string, body: Record<string, unknown>, options?: RequestInit) {
+  public put(endpoint: string, body?: Record<string, unknown>, options?: RequestInit) {
     return this.request('PUT', endpoint, options, body);
   }
 
