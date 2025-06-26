@@ -26,6 +26,10 @@ export function QueryTest() {
     queryFn: fetchWithError,
     enabled: false, // Don't run automatically
     retry: false,
+    meta: {
+      toast: false,
+      message: 'Test Query Error Toast',
+    },
   });
 
   const { mutate: mutateWithError } = useMutation({

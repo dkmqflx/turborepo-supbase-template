@@ -22,10 +22,13 @@ export function makeQueryClient() {
 
     queryCache: new QueryCache({
       // NOTE: add error toast for query
-      onError: (error) => {
+      onError: (error, query) => {
         console.error(error);
-        if (!isServer) {
-          toast.error(error.message);
+
+        if (isServer) return;
+
+        if (query.meta?.toast) {
+          toast.error(query.meta?.message as string);
         }
       },
     }),
