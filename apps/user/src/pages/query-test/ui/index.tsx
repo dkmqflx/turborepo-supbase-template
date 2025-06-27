@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { Button } from '@repo/ui/button';
@@ -8,15 +10,45 @@ import { ApiError } from '@repo/utils/apiError';
 
 import { client } from '@/shared/lib/apiClient';
 
+const unusedVar = 123;
+
+// 미사용 함수
+function unusedFunction() {
+  return 'I am not used';
+}
+
+// 콘솔 사용 (no-console 규칙이 error일 경우)
+console.log('This is a console log');
+
+// var 대신 let/const 권장 (no-var)
+const shouldBeConst = 42;
+
+// 함수 선언 후 사용하지 않음
+function anotherUnused() {}
+
 // This function will always throw an error
 const fetchWithError = async () => {
   const { data } = await client.get('/api/error');
+
+  console.log(data);
 
   return data;
 };
 
 const fetchWithErrorMutation = async () => {
   const { data } = await client.post('/api/error');
+
+  return data;
+};
+
+const fetchWithServerError = async () => {
+  const { data } = await client.get('/api/server-error');
+
+  return data;
+};
+
+const fetchWithServerErrorMutation = async () => {
+  const { data } = await client.post('/api/server-error');
 
   return data;
 };
@@ -28,7 +60,7 @@ export function QueryTest() {
     enabled: false, // Don't run automatically
     retry: false,
     meta: {
-      toast: false,
+      toast: true,
       message: 'Test Query Error Toast',
     },
   });
@@ -45,10 +77,24 @@ export function QueryTest() {
     },
   });
 
+  const { refetch: refetchWithServerError } = useQuery({
+    queryKey: ['test-server-error'],
+    queryFn: fetchWithServerError,
+    enabled: false, // Don't run automatically
+    retry: false,
+  });
+
+  const { mutate: mutateWithServerError } = useMutation({
+    mutationFn: fetchWithServerErrorMutation,
+  });
+
   return (
-    <div className="p-4">
+    <div className="flex gap-4">
       <Button onClick={() => refetch()}>Test Query Error Toast</Button>
       <Button onClick={() => mutateWithError()}>Test Mutation Error Toast</Button>
+
+      <Button onClick={() => refetchWithServerError()}>Test Query Server Error Toast</Button>
+      <Button onClick={() => mutateWithServerError()}>Test Mutation ErrorBoundary</Button>
     </div>
   );
 }
