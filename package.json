@@ -3,7 +3,11 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:admin": "turbo build --filter admin",
+    "build:user": "turbo build --filter user",
     "dev": "turbo run dev",
+    "dev:admin": "turbo dev --filter admin",
+    "dev:user": "turbo dev --filter user",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
