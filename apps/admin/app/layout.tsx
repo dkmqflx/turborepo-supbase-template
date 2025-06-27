@@ -33,7 +33,7 @@ export default function RootLayout({
         <QueryProvider>
           <QueryErrorBoundary>{children}</QueryErrorBoundary>
         </QueryProvider>
-        <Toaster richColors />
+        <Toaster />
       </body>
     </html>
   );

@@ -1,5 +1,4 @@
 import {
-  MutationCache,
   QueryCache,
   QueryClient,
   defaultShouldDehydrateMutation,
@@ -8,33 +7,39 @@ import {
 } from '@tanstack/react-query';
 
 import { toast } from '@repo/ui/sonner';
+import { ApiError } from '@repo/utils/apiError';
 
 export function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
         staleTime: 60 * 1000,
+        throwOnError: (error) => {
+          console.log(error);
+          return error instanceof ApiError && error.code === 'SERVER_ERROR';
+        },
+      },
+      mutations: {
+        throwOnError: (error) => {
+          console.log(error);
+          return error instanceof ApiError && error.code === 'SERVER_ERROR';
+        },
       },
       dehydrate: {
         shouldDehydrateQuery: (query) => defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
         shouldDehydrateMutation: (query) => defaultShouldDehydrateMutation(query) || query.state.status === 'pending',
       },
     },
-    mutationCache: new MutationCache({
-      // NOTE: add error toast for mutation
-      onError: (error) => {
-        console.error(error);
-        if (!isServer) {
-          toast.error(error.message);
-        }
-      },
-    }),
-    // NOTE: add error toast for query
+
     queryCache: new QueryCache({
-      onError: (error) => {
+      // NOTE: add error toast for query
+      onError: (error, query) => {
         console.error(error);
-        if (!isServer) {
-          toast.error(error.message);
+
+        if (isServer) return;
+
+        if (query.meta?.toast) {
+          toast.error(query.meta?.message as string);
         }
       },
     }),
