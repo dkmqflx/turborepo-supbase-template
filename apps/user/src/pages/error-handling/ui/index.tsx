@@ -53,7 +53,7 @@ const fetchWithServerErrorMutation = async () => {
   return data;
 };
 
-export function QueryTest() {
+export function ErrorHandling() {
   const { refetch } = useQuery({
     queryKey: ['test-error'],
     queryFn: fetchWithError,
@@ -99,4 +99,4 @@ export function QueryTest() {
   );
 }
 
-export default QueryTest;
+export default ErrorHandling;
