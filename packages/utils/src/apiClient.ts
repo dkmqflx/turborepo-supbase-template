@@ -11,6 +11,8 @@ export class ApiClient {
     if (!response.ok) {
       const result = await response.json();
 
+      console.log('result', result);
+
       throw new ApiError({
         code: result?.code,
         message: result?.message,

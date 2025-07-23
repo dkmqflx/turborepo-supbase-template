@@ -10,6 +10,8 @@ import { ApiError } from '@repo/utils/apiError';
 
 import { client } from '@/shared/lib/apiClient';
 
+import { serverActionError, serverActionSuccess } from '../actions';
+
 const unusedVar = 123;
 
 // 미사용 함수
@@ -88,6 +90,28 @@ export function ErrorHandling() {
     mutationFn: fetchWithServerErrorMutation,
   });
 
+  const handleServerActionError = async () => {
+    const { result } = await serverActionError();
+
+    if (!result.isSuccess) {
+      toast.error(result.message);
+      return;
+    }
+
+    toast.success(result.message);
+  };
+
+  const handleServerActionSuccess = async () => {
+    const { result } = await serverActionSuccess();
+
+    if (!result.isSuccess) {
+      toast.error(result.message);
+      return;
+    }
+
+    toast.success(result.message);
+  };
+
   return (
     <div className="flex gap-4">
       <Button onClick={() => refetch()}>Test Query Error Toast</Button>
@@ -95,6 +119,10 @@ export function ErrorHandling() {
 
       <Button onClick={() => refetchWithServerError()}>Test Query Server Error Toast</Button>
       <Button onClick={() => mutateWithServerError()}>Test Mutation ErrorBoundary</Button>
+
+      <Button onClick={handleServerActionError}>Server Action Error</Button>
+
+      <Button onClick={handleServerActionSuccess}>Server Action Success</Button>
     </div>
   );
 }
