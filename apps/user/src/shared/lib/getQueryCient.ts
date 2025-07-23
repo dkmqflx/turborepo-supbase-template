@@ -12,14 +12,17 @@ import { ApiError } from '@repo/utils/apiError';
 export function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
+      // NOTE: after onError callback function is called, the throwOnError will be called
       queries: {
         staleTime: 60 * 1000,
+        // NOTE: Error boundary will be triggered if throwOnError return true
         throwOnError: (error) => {
           console.log(error);
           return error instanceof ApiError && error.code === 'SERVER_ERROR';
         },
       },
       mutations: {
+        // NOTE: Error boundary will be triggered if throwOnError return true
         throwOnError: (error) => {
           console.log(error);
           return error instanceof ApiError && error.code === 'SERVER_ERROR';
