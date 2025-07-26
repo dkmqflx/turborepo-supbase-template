@@ -12,27 +12,24 @@ import { client } from '@/shared/lib/apiClient';
 
 import { serverActionError, serverActionSuccess } from '../actions';
 
-const unusedVar = 123;
+// useQuery
+const fetchWithSuccess = async () => {
+  const { data } = await client.get('/api/success');
 
-// 미사용 함수
-function unusedFunction() {
-  return 'I am not used';
-}
+  return data;
+};
 
-// 콘솔 사용 (no-console 규칙이 error일 경우)
-console.log('This is a console log');
-
-// var 대신 let/const 권장 (no-var)
-const shouldBeConst = 42;
-
-// 함수 선언 후 사용하지 않음
-function anotherUnused() {}
-
-// This function will always throw an error
 const fetchWithError = async () => {
   const { data } = await client.get('/api/error');
 
-  console.log(data);
+  return data;
+};
+
+// useMutation
+const fetchWithSuccessMutation = async () => {
+  const { data } = await client.post('/api/success');
+
+  console.log('data', data);
 
   return data;
 };
@@ -43,6 +40,7 @@ const fetchWithErrorMutation = async () => {
   return data;
 };
 
+// Server Action
 const fetchWithServerError = async () => {
   const { data } = await client.get('/api/server-error');
 
@@ -56,6 +54,17 @@ const fetchWithServerErrorMutation = async () => {
 };
 
 export function ErrorHandling() {
+  const { refetch: refetchWithSuccess } = useQuery({
+    queryKey: ['test-success'],
+    queryFn: fetchWithSuccess,
+    enabled: false, // Don't run automatically
+    retry: false,
+    meta: {
+      toast: true,
+      message: 'Test Query Success Toast',
+    },
+  });
+
   const { refetch } = useQuery({
     queryKey: ['test-error'],
     queryFn: fetchWithError,
@@ -64,6 +73,13 @@ export function ErrorHandling() {
     meta: {
       toast: true,
       message: 'Test Query Error Toast',
+    },
+  });
+
+  const { mutate: mutateWithSuccess } = useMutation({
+    mutationFn: fetchWithSuccessMutation,
+    onSuccess: (data) => {
+      toast.success('Test Mutation Success Toast');
     },
   });
 
@@ -113,16 +129,30 @@ export function ErrorHandling() {
   };
 
   return (
-    <div className="flex gap-4">
-      <Button onClick={() => refetch()}>Test Query Error Toast</Button>
-      <Button onClick={() => mutateWithError()}>Test Mutation Error Toast</Button>
+    <div className="flex flex-col gap-4">
+      {/* useQuery */}
+      <div className="flex gap-4">
+        <Button onClick={() => refetchWithSuccess()}>Test Query Success Toast</Button>
+        <Button onClick={() => refetch()}>Test Query Error Toast</Button>
+      </div>
 
-      <Button onClick={() => refetchWithServerError()}>Test Query Server Error Toast</Button>
-      <Button onClick={() => mutateWithServerError()}>Test Mutation ErrorBoundary</Button>
+      {/* useMutation */}
+      <div className="flex gap-4">
+        <Button onClick={() => mutateWithSuccess()}>Test Mutation Success Toast</Button>
+        <Button onClick={() => mutateWithError()}>Test Mutation Error Toast</Button>
+      </div>
 
-      <Button onClick={handleServerActionError}>Server Action Error</Button>
+      {/* ErrorBoundary */}
+      <div className="flex gap-4">
+        <Button onClick={() => refetchWithServerError()}>useQuery ErrorBoundary</Button>
+        <Button onClick={() => mutateWithServerError()}>useMutation ErrorBoundary</Button>
+      </div>
 
-      <Button onClick={handleServerActionSuccess}>Server Action Success</Button>
+      {/* server action */}
+      <div className="flex gap-4">
+        <Button onClick={handleServerActionError}>Server Action Error</Button>
+        <Button onClick={handleServerActionSuccess}>Server Action Success</Button>
+      </div>
     </div>
   );
 }

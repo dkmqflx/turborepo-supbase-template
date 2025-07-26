@@ -35,7 +35,17 @@ export function makeQueryClient() {
     },
 
     queryCache: new QueryCache({
-      // NOTE: add error toast for query
+      // NOTE: toast for query
+      onSuccess: (data, query) => {
+        console.log('data', data);
+
+        if (isServer) return;
+
+        if (query.meta?.toast) {
+          toast.success(query.meta?.message as string);
+        }
+      },
+
       onError: (error, query) => {
         console.error(error);
 
