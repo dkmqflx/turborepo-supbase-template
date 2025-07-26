@@ -1,3 +1,5 @@
+import { BaseResponse } from '@repo/types/api';
+
 import { ApiError } from './apiError';
 
 export class ApiClient {
@@ -7,7 +9,7 @@ export class ApiClient {
     this.baseUrl = url;
   }
 
-  private async handleResponse(response: Response) {
+  private async handleResponse<T>(response: Response): Promise<BaseResponse<T>> {
     if (!response.ok) {
       const result = await response.json();
 
@@ -43,11 +45,11 @@ export class ApiClient {
     return url.toString();
   }
 
-  private async request(
+  private async request<T, TBody = Record<string, unknown>>(
     method: string,
     endpoint: string,
     options?: RequestInit,
-    body?: Record<string, unknown>,
+    body?: TBody,
     queryParams?: Record<string, string | number | boolean>,
   ) {
     const url = this.buildUrl(endpoint, queryParams);
@@ -62,22 +64,22 @@ export class ApiClient {
       ...options,
     });
 
-    return this.handleResponse(response);
+    return this.handleResponse<T>(response);
   }
 
-  public get(endpoint: string, queryParams?: Record<string, string | number | boolean>, options?: RequestInit) {
-    return this.request('GET', endpoint, options, undefined, queryParams);
+  public get<T>(endpoint: string, queryParams?: Record<string, string | number | boolean>, options?: RequestInit) {
+    return this.request<T>('GET', endpoint, options, undefined, queryParams);
   }
 
-  public post(endpoint: string, body?: Record<string, unknown> | undefined, options?: RequestInit) {
-    return this.request('POST', endpoint, options, body);
+  public post<T, TBody = Record<string, unknown>>(endpoint: string, body?: TBody, options?: RequestInit) {
+    return this.request<T, TBody>('POST', endpoint, options, body);
   }
 
-  public put(endpoint: string, body?: Record<string, unknown>, options?: RequestInit) {
-    return this.request('PUT', endpoint, options, body);
+  public put<T, TBody = Record<string, unknown>>(endpoint: string, body?: TBody, options?: RequestInit) {
+    return this.request<T, TBody>('PUT', endpoint, options, body);
   }
 
-  public delete(endpoint: string, options?: RequestInit) {
-    return this.request('DELETE', endpoint, options);
+  public delete<T>(endpoint: string, options?: RequestInit) {
+    return this.request<T>('DELETE', endpoint, options);
   }
 }

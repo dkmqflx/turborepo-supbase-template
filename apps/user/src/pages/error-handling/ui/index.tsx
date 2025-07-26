@@ -14,7 +14,7 @@ import { serverActionError, serverActionSuccess } from '../actions';
 
 // useQuery
 const fetchWithSuccess = async () => {
-  const { data } = await client.get('/api/success');
+  const { data } = await client.get<string>('/api/success');
 
   return data;
 };
@@ -54,7 +54,7 @@ const fetchWithServerErrorMutation = async () => {
 };
 
 export function ErrorHandling() {
-  const { refetch: refetchWithSuccess } = useQuery({
+  const { refetch: refetchWithSuccess, data: dataWithSuccess } = useQuery({
     queryKey: ['test-success'],
     queryFn: fetchWithSuccess,
     enabled: false, // Don't run automatically
@@ -64,6 +64,8 @@ export function ErrorHandling() {
       message: 'Test Query Success Toast',
     },
   });
+
+  console.log('dataWithSuccess', dataWithSuccess);
 
   const { refetch } = useQuery({
     queryKey: ['test-error'],
